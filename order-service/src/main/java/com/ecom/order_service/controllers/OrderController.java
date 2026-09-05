@@ -21,7 +21,8 @@ public class OrderController {
 
 
 	@PostMapping("/{productId}")
-	public String placeOrder(@PathVariable String productId) {
+	public String placeOrder(@PathVariable Long productId) {
+		// rest template, rest cleint and openfeign 
 		String output= orderService.placeOrder(productId);
 		return output;
 	}
