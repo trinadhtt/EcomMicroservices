@@ -6,16 +6,24 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
+import com.ecom.order_service.client.InventoryClient;
 import com.ecom.order_service.dto.Inventory;
 import com.ecom.order_service.exceptions.MyCustomRuntimeException;
 
 @Service
 public class OrderService {
 	
-	@Autowired
-	RestClient restClient;
 	
-	public String placeOrder(Long productId) {
+	private final RestClient restClient;
+	private final InventoryClient invClient;
+	
+	
+	public OrderService(RestClient restClient,InventoryClient invClient) {
+		this.invClient = invClient;
+		this.restClient = restClient;
+	}
+
+	public String placeOrderRestClient(Long productId) {
 		
 		//Calling inventory service to check stock details
 		
@@ -41,9 +49,16 @@ public class OrderService {
 		return result.getBody() != null  && result.getBody().getQuantity()>0? "Order Placed Succesful" :"Product Out of stock";
 		
 	}
+	
+	public String placeOrderFeign(Long productId) {
+	    Inventory result = invClient.getInventory(productId);
+	    System.out.println("Response Open feign : " +result.getQuantity() ); 
+	    updateInventoryFeign(result,productId);
+		return result != null && result.getQuantity() > 0 ? "Order Placed Succesful"
+				: "Product Out of stock";
+	}
 
 	private void updateInventory(Inventory inventory, Long productId) {
-		// TODO Auto-generated method stub
 		inventory.setQuantity(inventory.getQuantity()-1);
 		ResponseEntity<Inventory> response= restClient.put()
 				.uri("http://localhost:8081/inventory/update/{productId}",productId)
@@ -51,6 +66,12 @@ public class OrderService {
 				.retrieve()
 				.toEntity(Inventory.class);
 		System.out.println("Contents: " + response.getBody()); 
+	}
+	
+	private void updateInventoryFeign(Inventory inventory, Long productId) {
+		inventory.setQuantity(inventory.getQuantity()-1);
+		Inventory response=invClient.updateInventory(productId, inventory);
+		System.out.println("Contents update feign: " + response); 
 	}
 
 }

@@ -1,7 +1,5 @@
 package com.ecom.inventory_service.controllers;
 
-import java.util.Optional;
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,7 +26,8 @@ public class InventoryController {
 	
 	
 	@GetMapping("/{productId}")
-	public Inventory checkInventory(@PathVariable Long productId) {
+	public Inventory checkInventory(@PathVariable Long productId) throws InterruptedException {
+		//Thread.sleep(15000);
 		return inventoryRepo.findByProductId(productId);
 	}
 	
