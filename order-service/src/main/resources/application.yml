@@ -3,6 +3,21 @@ spring:
     name: order-service 
 server:
   port: 8080
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    registry-fetch-interval-seconds: 5
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    hostname: localhost
+    lease-renewal-interval-in-seconds: 5
+    instance-id: ${spring.application.name}:${server.port}
 logging:
   level:
     com.ecom.order_service.client: DEBUG 
+    com.netflix.discovery: DEBUG
+
+      

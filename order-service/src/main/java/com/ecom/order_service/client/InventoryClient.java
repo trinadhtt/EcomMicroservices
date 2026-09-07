@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import com.ecom.order_service.config.InventoryFeignClientConfig;
 import com.ecom.order_service.dto.Inventory;
 
-@FeignClient(name="inventory-service", url= "http://localhost:8081",configuration = InventoryFeignClientConfig.class)
+@FeignClient(name="INVENTORY-SERVICE",configuration = InventoryFeignClientConfig.class)
 public interface InventoryClient {
 	
     @GetMapping("/inventory/{productId}")
