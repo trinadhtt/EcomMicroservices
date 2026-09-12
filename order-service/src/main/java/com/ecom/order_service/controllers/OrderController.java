@@ -26,7 +26,10 @@ public class OrderController {
 		//String output= orderService.placeOrderRestClient(productId);
 		
 		// Openfeign 
-		String output= orderService.placeOrderFeign(productId);
+		//String output= orderService.placeOrderFeign(productId);
+		
+		// Open Feign Retry
+		String output= orderService.placeOrderFeignRetry(productId);
 		return output;
 	}
 	

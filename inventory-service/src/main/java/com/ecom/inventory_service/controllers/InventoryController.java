@@ -26,10 +26,11 @@ public class InventoryController {
 	
 	
 	@GetMapping("/{productId}")
-	public Inventory checkInventory(@PathVariable Long productId) throws InterruptedException {
+	public Inventory checkInventory(@PathVariable Long productId) throws Exception {
 		//Thread.sleep(15000);
+		//throw new Exception("inventory service is down for testing retry");
 		return inventoryRepo.findByProductId(productId);
-	}
+	}  
 	
 	@PostMapping("/create")
 	public Inventory addInventory(@RequestBody Inventory inventory) {

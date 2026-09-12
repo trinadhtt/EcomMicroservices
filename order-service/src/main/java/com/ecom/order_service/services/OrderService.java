@@ -16,11 +16,13 @@ public class OrderService {
 	
 	private final RestClient restClient;
 	private final InventoryClient invClient;
+	private final InventoryService invService;
 	
 	
-	public OrderService(RestClient restClient,InventoryClient invClient) {
+	public OrderService(RestClient restClient,InventoryClient invClient,InventoryService invService) {
 		this.invClient = invClient;
 		this.restClient = restClient;
+		this.invService = invService;
 	}
 
 	public String placeOrderRestClient(Long productId) {
@@ -52,6 +54,14 @@ public class OrderService {
 	
 	public String placeOrderFeign(Long productId) {
 	    Inventory result = invClient.getInventory(productId);
+	    System.out.println("Response Open feign : " +result.getQuantity() ); 
+	    updateInventoryFeign(result,productId);
+		return result != null && result.getQuantity() > 0 ? "Order Placed Succesful"
+				: "Product Out of stock";
+	}
+	
+	public String placeOrderFeignRetry(Long productId) {
+	    Inventory result = invService.placeOrderFeign(productId);
 	    System.out.println("Response Open feign : " +result.getQuantity() ); 
 	    updateInventoryFeign(result,productId);
 		return result != null && result.getQuantity() > 0 ? "Order Placed Succesful"
