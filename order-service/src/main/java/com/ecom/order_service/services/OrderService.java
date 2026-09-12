@@ -67,6 +67,14 @@ public class OrderService {
 		return result != null && result.getQuantity() > 0 ? "Order Placed Succesful"
 				: "Product Out of stock";
 	}
+	
+	public String placeOrderFeignCircuitBreaker(Long productId) {
+	    Inventory result = invService.placeOrderFeignCircuitBreaker(productId);
+	    System.out.println("Response Open feign : " +result.getQuantity() ); 
+	    updateInventoryFeign(result,productId);
+		return result != null && result.getQuantity() > 0 ? "Order Placed Succesful"
+				: "Product Out of stock";
+	}
 
 	private void updateInventory(Inventory inventory, Long productId) {
 		inventory.setQuantity(inventory.getQuantity()-1);

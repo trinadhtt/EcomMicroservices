@@ -29,7 +29,11 @@ public class OrderController {
 		//String output= orderService.placeOrderFeign(productId);
 		
 		// Open Feign Retry
-		String output= orderService.placeOrderFeignRetry(productId);
+		//String output= orderService.placeOrderFeignRetry(productId);
+		
+		// Circuit Breaker Implementation
+		String output= orderService.placeOrderFeignCircuitBreaker(productId);
+		
 		return output;
 	}
 	
