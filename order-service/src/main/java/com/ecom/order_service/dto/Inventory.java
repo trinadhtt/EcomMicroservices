@@ -2,6 +2,12 @@ package com.ecom.order_service.dto;
 
 public class Inventory {
 
+	public Inventory(Long productId, Integer quantity) {
+		super();
+		this.productId = productId;
+		this.quantity = quantity;
+	}
+
 	private Long productId;
 	private Integer quantity;
 

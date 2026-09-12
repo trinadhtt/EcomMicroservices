@@ -3,7 +3,6 @@ spring:
     name: order-service 
 server:
   port: 8080
-
 eureka:
   client:
     register-with-eureka: true
@@ -19,5 +18,11 @@ logging:
   level:
     com.ecom.order_service.client: DEBUG 
     com.netflix.discovery: DEBUG
-
+resilience4j:
+  ratelimiter:
+    instances:
+      inventoryService:
+        limit-for-period: 2  # 2 request for 10 sec
+        limit-refresh-period: 10s # 10 sec for refresh limits
+        timeout-duration: 0s # duration to throw error
       
