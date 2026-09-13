@@ -32,8 +32,10 @@ public class OrderController {
 		//String output= orderService.placeOrderFeignRetry(productId);
 		
 		// Circuit Breaker Implementation
-		String output= orderService.placeOrderFeignCircuitBreaker(productId);
+		//String output= orderService.placeOrderFeignCircuitBreaker(productId);
 		
+		// Time Limiter Implementation
+		 String output= orderService.placeOrderFeignTimeLimiter(productId);
 		return output;
 	}
 	

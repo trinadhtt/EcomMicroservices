@@ -1,5 +1,7 @@
 package com.ecom.order_service.services;
 
+import java.util.concurrent.CompletableFuture;
+
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
@@ -9,6 +11,7 @@ import com.ecom.order_service.dto.Inventory;
 
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
+import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
 
 @Service
 public class InventoryService {
@@ -40,8 +43,15 @@ private final InventoryClient invClient;
 		return result ;
 	}
 	
+	@TimeLimiter(name="inventoryServiceTimeLimiter", fallbackMethod = "fallBackTimeLimiterMethod")
+	public CompletableFuture<Inventory> placeOrderFeignTimeLimiter(Long productId) {
+		//retry demo how its work
+		System.out.println("Get Inventory for ProductId:"+ productId);
+		return CompletableFuture.supplyAsync(() -> invClient.getInventory(productId));
+	}
+	
 	public Inventory fallBackCircuitBreakerMethod(Long productId, Throwable throwable) {
-		//rate Limiter demo how its work
+		//Circuit breaker demo how its work
 		System.out.println("Fall back method  for Circuit Breaker ProductId"+ productId);
 		return new Inventory(productId, 5);
 	}
@@ -50,5 +60,12 @@ private final InventoryClient invClient;
 		//rate Limiter demo how its work
 		System.out.println("Fall back method  for Rate Limiter ProductId"+ productId);
 		return new Inventory(productId, 5);
+	}
+	
+	public CompletableFuture<Inventory> fallBackTimeLimiterMethod(Long productId, Throwable throwable) {
+		//Time Limiter demo how its work
+		System.out.println("Fall back method  for Time Limiter ProductId"+ productId);
+		Inventory inv= new Inventory(productId, 5);
+		return CompletableFuture.completedFuture(inv);
 	}
 }
