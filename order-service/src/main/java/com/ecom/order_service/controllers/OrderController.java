@@ -35,7 +35,13 @@ public class OrderController {
 		//String output= orderService.placeOrderFeignCircuitBreaker(productId);
 		
 		// Time Limiter Implementation
-		 String output= orderService.placeOrderFeignTimeLimiter(productId);
+		// String output= orderService.placeOrderFeignTimeLimiter(productId);
+		 
+		// Bulk Head Implementation -semaphore
+		// String output= orderService.placeOrderFeignBulkHead(productId);
+		 
+		// Bulk Head Implementation -ThreadPool
+		String output= orderService.placeOrderFeignBulkHeadThreadPool(productId);
 		return output;
 	}
 	

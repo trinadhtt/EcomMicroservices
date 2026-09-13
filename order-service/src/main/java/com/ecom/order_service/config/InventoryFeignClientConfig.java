@@ -31,7 +31,7 @@ public class InventoryFeignClientConfig {
 	 */
 	  @Bean 
 	  Request.Options options(){ 
-	  return new Request.Options(Duration.ofMillis(3000),Duration.ofMillis(5000),true); 
+	  return new Request.Options(Duration.ofMillis(30000),Duration.ofMillis(25000),true); 
 	  }
 	  
 	  //long period(how much time will it wait), long maxPeriod(second time onwards how much time it has to wait),

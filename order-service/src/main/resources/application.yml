@@ -52,3 +52,14 @@ resilience4j:
       inventoryServiceTimeLimiter:
         timeout-duration: 2s
         cancel-running-future: true
+  bulkhead:
+    instances:
+      inventoryServiceBulkHead:
+        max-concurrent-calls: 2
+        max-wait-duration: 10s
+  thread-pool-bulkhead:
+    instances:
+      inventoryServiceThreadpoolBulkHead:
+        max-thread-pool-size: 2
+        core-thread-pool-size: 1
+        queue-capacity: 0

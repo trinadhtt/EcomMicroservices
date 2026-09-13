@@ -83,6 +83,21 @@ public class OrderService {
 		return result != null && result.getQuantity() > 0 ? "Order Placed Succesful"
 				: "Product Out of stock";
 	}
+	
+	public String placeOrderFeignBulkHead(Long productId) {
+	    Inventory result = invService.placeOrderFeignBulkHead(productId);
+	    System.out.println("Response Open feign : " +result.getQuantity() ); 
+	    updateInventoryFeign(result,productId);
+		return result != null && result.getQuantity() > 0 ? "Order Placed Succesful"
+				: "Product Out of stock";
+	}
+	
+	public String placeOrderFeignBulkHeadThreadPool(Long productId) {
+	    Inventory result = invService.placeOrderFeignBulkHeadThreadPool(productId).join();
+	    System.out.println("Response Open feign : " +result.getQuantity() ); 
+		return result != null && result.getQuantity() > 0 ? "Order Placed Succesful"
+				: "Product Out of stock";
+	}
 
 	private void updateInventory(Inventory inventory, Long productId) {
 		inventory.setQuantity(inventory.getQuantity()-1);
