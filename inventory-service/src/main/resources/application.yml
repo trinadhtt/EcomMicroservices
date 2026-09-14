@@ -1,6 +1,17 @@
 spring:
   application: 
     name: inventory-service
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: inventory-service
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: com.ecom.inventory_service.kafka
+        spring.json.value.default.type: com.ecom.inventory_service.kafka.OrderCreatedEvent
+        spring.json.use.type.headers: false
   datasource:
     url: jdbc:postgresql://localhost:5432/inventory_db
     username: postgres
